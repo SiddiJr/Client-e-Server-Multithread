@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.Socket;
+<<<<<<< HEAD
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -7,6 +8,12 @@ import java.security.NoSuchAlgorithmException;
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private static DataOutputStream dataOutputStream = null;
+=======
+
+public class ClientHandler implements Runnable {
+    private final Socket clientSocket;
+
+>>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
     }
@@ -18,6 +25,7 @@ public class ClientHandler implements Runnable {
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+<<<<<<< HEAD
             dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
             String line;
@@ -45,6 +53,16 @@ public class ClientHandler implements Runnable {
             }
         }
         catch (Exception e) {
+=======
+
+            String line;
+            while ((line = in.readLine()) != null) {
+                System.out.printf("Sent from the client: %s\n", line);
+                out.println(line);
+            }
+        }
+        catch (IOException e) {
+>>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
             throw new RuntimeException(e);
         } finally {
             try {
@@ -52,12 +70,16 @@ public class ClientHandler implements Runnable {
                     out.close();
                 }
                 if (in != null) {
+<<<<<<< HEAD
                     dataOutputStream.close();
+=======
+>>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
                     in.close();
                     clientSocket.close();
                 }
             }
             catch (IOException e) {
+<<<<<<< HEAD
                 System.out.println("erro");
             }
         }
@@ -94,4 +116,10 @@ public class ClientHandler implements Runnable {
         }
         return hexString.toString();
     }
+=======
+                e.printStackTrace();
+            }
+        }
+    }
+>>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
 }
