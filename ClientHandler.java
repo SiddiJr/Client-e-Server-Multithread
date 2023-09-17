@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-<<<<<<< HEAD
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,61 +7,50 @@ import java.security.NoSuchAlgorithmException;
 public class ClientHandler implements Runnable {
     private final Socket clientSocket;
     private static DataOutputStream dataOutputStream = null;
-=======
+    private static String path = "C:/Users/sidne/Desktop/teste/servidor/";
 
-public class ClientHandler implements Runnable {
-    private final Socket clientSocket;
-
->>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
     }
 
-    @Override
     public void run() {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-<<<<<<< HEAD
             dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
             String line;
             while (true) {
                 line = in.readLine();
 
-                if(line.equalsIgnoreCase("sair")){
+                if(line != null && line.equalsIgnoreCase("sair")){
                     System.out.printf("Fechando conexão com %s ...\n", clientSocket.getInetAddress().getHostAddress());
                     break;
                 }
-                else if(line.equalsIgnoreCase("arquivo")) {
-                    File file = new File("C:\\Users\\sidne\\Desktop\\teste\\servidor\\foi.txt");
-                    String hash = sha(file);
-                    long length = Files.size(file.toPath());
-                    String string = Long.toString(length);
-                    out.println("foi.txt");
-                    out.println(string);
-                    out.println(hash);
-                    sendFile("C:\\Users\\sidne\\Desktop\\teste\\servidor\\foi.txt");
-                    out.println("ok");
-                } else {
+                else if(line != null && line.contains("arquivo")) {
+                    String arquivo = line.replace("arquivo ", "");
+                    File file = new File(path + arquivo);
+                    if(file.exists()){
+                        out.println("ok");
+                        String hash = sha(file);
+                        long length = Files.size(file.toPath());
+                        String string = Long.toString(length);
+                        out.println(arquivo);
+                        out.println(string);
+                        out.println(hash);
+                        sendFile(path + arquivo);
+                        Thread.sleep(500);
+                    } else {
+                        out.println("nok");
+                    }
+                } else if(line != null && line.equalsIgnoreCase("chat")) {
                     System.out.println("faz algo");
                 }
-
             }
         }
         catch (Exception e) {
-=======
-
-            String line;
-            while ((line = in.readLine()) != null) {
-                System.out.printf("Sent from the client: %s\n", line);
-                out.println(line);
-            }
-        }
-        catch (IOException e) {
->>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
             throw new RuntimeException(e);
         } finally {
             try {
@@ -70,16 +58,12 @@ public class ClientHandler implements Runnable {
                     out.close();
                 }
                 if (in != null) {
-<<<<<<< HEAD
                     dataOutputStream.close();
-=======
->>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
                     in.close();
                     clientSocket.close();
                 }
             }
             catch (IOException e) {
-<<<<<<< HEAD
                 System.out.println("erro");
             }
         }
@@ -91,7 +75,6 @@ public class ClientHandler implements Runnable {
         FileInputStream fileInputStream = new FileInputStream(file);
 
         // send file size
-	System.out.println(file.length());
         dataOutputStream.writeLong(file.length());
         // break file into chunks
         byte[] buffer = new byte[4*1024];
@@ -116,10 +99,4 @@ public class ClientHandler implements Runnable {
         }
         return hexString.toString();
     }
-=======
-                e.printStackTrace();
-            }
-        }
-    }
->>>>>>> eabae7f6be49ac5e9c9d70349b89c2cef66eb6f6
 }
