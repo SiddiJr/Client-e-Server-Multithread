@@ -22,7 +22,7 @@ public class Client {
             String line = null;
 
             while (true) {
-                System.out.print("Arquivo, sair ou chat? ");
+                System.out.print("Arquivo ou sair? ");
                 line = sc.nextLine();
                 out.println(line);
 
@@ -47,11 +47,9 @@ public class Client {
                         if (sha(path + line).equals(hash)) {
                             System.out.println("The hashes are the same ");
                         }
-                    } else if(line.equalsIgnoreCase("chat")) {
+                    } else if(result.equalsIgnoreCase("nok")) {
                         System.out.printf("A resposta foi %s, pois o arquivo requisitado não existe!\n", result);
                     }
-                } else if(line.equalsIgnoreCase("chat")) {
-                    System.out.println("faz algo");
                 }
                 out.flush();
             }
