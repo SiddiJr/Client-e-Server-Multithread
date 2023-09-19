@@ -45,6 +45,15 @@ public class ClientHandler implements Runnable {
                     } else {
                         out.println("nok");
                     }
+                } else if(line.equalsIgnoreCase("chat")) {
+                    ServerChatOutput serverOutput = new ServerChatOutput(out);
+                    ServerChatInput serverInput = new ServerChatInput(in);
+                    Thread threadOutput = new Thread(serverOutput);
+                    Thread threadInput = new Thread(serverInput);
+                    threadOutput.start();
+                    threadInput.start();
+                    threadOutput.join();
+                    threadInput.join();
                 }
             }
         }
