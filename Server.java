@@ -11,9 +11,9 @@ class Server {
             server.setReuseAddress(true);
 
             while(true) {
-                Socket client = server.accept();
+                client = server.accept();
 
-                System.out.println("New client accepted " + client.getInetAddress().getHostAddress());
+                System.out.println("New client accepted" + client.getInetAddress().getHostAddress());
                 ClientHandler clientSocket = new ClientHandler(client);
 
                 new Thread(clientSocket).start();
